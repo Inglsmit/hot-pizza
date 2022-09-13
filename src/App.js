@@ -20,7 +20,7 @@ function App () {
 					<div className="content__items">
 						{
 							pizzas.map( ( pizza, i ) => (
-								<PizzaBlock { ...pizza } />
+								<PizzaBlock key={ i } { ...pizza } />
 							) )
 						}
 					</div>

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 
 function PizzaBlock ( props ) {
 	const { title, price, imageUrl, sizes, types } = props;
-	const [ pizzaCount, setCount ] = useState( 0 );
+	const [ pizzaCount, setCount ] = React.useState( 0 );
 	const typeNames = [ 'tiny', 'traditional' ];
 
-	const [ activeType, setActiveType ] = useState( 0 );
-	const [ activeSize, setActiveSize ] = useState( 0 );
+	const [ activeType, setActiveType ] = React.useState( 0 );
+	const [ activeSize, setActiveSize ] = React.useState( 0 );
 
 	const onClickAdd = () => {
 		setCount( pizzaCount + 1 );
@@ -25,6 +25,7 @@ function PizzaBlock ( props ) {
 					{
 						types.map( ( typeID ) => (
 							<li
+								key={ typeID }
 								onClick={ () => setActiveType( typeID ) }
 								className={ activeType === typeID ? 'active' : '' }
 							>
@@ -37,6 +38,7 @@ function PizzaBlock ( props ) {
 					{
 						sizes.map( ( size, i ) => (
 							<li
+								key={ i }
 								onClick={ () => setActiveSize( i ) }
 								className={ activeSize === i ? 'active' : '' }
 							>
