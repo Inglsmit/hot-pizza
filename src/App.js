@@ -3,10 +3,19 @@ import Header from './components/Header';
 import Categories from './components/Categories';
 import Sort from './components/Sort';
 import PizzaBlock from './components/PizzaBlock';
+import React from 'react';
 
-import pizzas from './assets/pizzas.json'
+// import pizzas from './assets/pizzas.json';
 
 function App () {
+	const [ pizzas, setPizzas ] = React.useState( [] )
+
+	React.useEffect( () => {
+		fetch( 'https://63232eaf362b0d4e7dde21f1.mockapi.io/items' )
+			.then( ( res ) => res.json() )
+			.then( ( arr ) => setPizzas( arr ) );
+	}, [] );
+
 	return (
 		<div className="wrapper">
 			<Header />
