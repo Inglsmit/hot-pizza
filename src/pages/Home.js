@@ -7,24 +7,23 @@ import Sceleton from '../components/PizzaBlock/Sceleton';
 export const Home = () => {
 	const [ pizzas, setPizzas ] = React.useState( [] );
 	const [ isLoading, setIsLoading ] = React.useState( true );
-	const
 
-		React.useEffect( () => {
-			fetch( 'https://63232eaf362b0d4e7dde21f1.mockapi.io/items' )
-				.then( ( res ) => res.json() )
-				.then( ( arr ) => {
-					setPizzas( arr );
-					setIsLoading( false );
-				} );
+	React.useEffect( () => {
+		fetch( 'https://63232eaf362b0d4e7dde21f1.mockapi.io/items' )
+			.then( ( res ) => res.json() )
+			.then( ( arr ) => {
+				setPizzas( arr );
+				setIsLoading( false );
+			} );
 
-			window.scrollTo( 0, 0 );
-		}, [] );
+		window.scrollTo( 0, 0 );
+	}, [] );
 
 	return (
 		<>
 			<div className="container">
 				<div className="content__top">
-					<Categories value={ } />
+					<Categories />
 					<Sort />
 				</div>
 				<h2 className="content__title">All pizzas</h2>
