@@ -3,8 +3,10 @@ import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Sceleton from '../components/PizzaBlock/Sceleton';
+import { SearchContext } from '../App';
 
 export const Home = () => {
+	const { searchValue } = React.useContext( SearchContext );
 	const [ pizzas, setPizzas ] = React.useState( [] );
 	const [ isLoading, setIsLoading ] = React.useState( true );
 	const [ categoryID, setCategoryID ] = React.useState( 0 );
@@ -15,7 +17,7 @@ export const Home = () => {
 	React.useEffect( () => {
 		setIsLoading( true );
 		fetch( `https://63232eaf362b0d4e7dde21f1.mockapi.io/items?${ categoryID > 0 ? `category=${ categoryID }` : ``
-			}&sortBy=${ sortType.sortProperty }&order=desc` )
+			}&sortBy=${ sortType.sortProperty }&order=desc&search=${ searchValue }` )
 			.then( ( res ) => res.json() )
 			.then( ( arr ) => {
 				setPizzas( arr );
@@ -23,7 +25,7 @@ export const Home = () => {
 			} );
 
 		window.scrollTo( 0, 0 );
-	}, [ categoryID, sortType ] );
+	}, [ categoryID, sortType, searchValue ] );
 
 	return (
 		<>
