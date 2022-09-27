@@ -1,17 +1,20 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { setCategoryID } from '../redux/slice/filtersSlice';
+import { setCategoryID, setCurrentPage } from '../redux/slice/filtersSlice';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Sceleton from '../components/PizzaBlock/Sceleton';
+import { Pagination } from '../components/Pagination';
+
 import { SearchContext } from '../App';
+import axios from 'axios';
 
 export const Home = () => {
 	const dispatch = useDispatch();
 
-	const { categoryID, sort } = useSelector( ( state ) => state.filter );
+	const { categoryID, sort, currentPage } = useSelector( ( state ) => state.filter );
 
 
 	const { searchValue } = React.useContext( SearchContext );
@@ -23,18 +26,23 @@ export const Home = () => {
 		dispatch( setCategoryID( id ) )
 	}
 
+	const onChangePage = ( number ) => {
+		dispatch( setCurrentPage( number ) );
+	}
+
 	React.useEffect( () => {
 		setIsLoading( true );
-		fetch( `https://63232eaf362b0d4e7dde21f1.mockapi.io/items?${ categoryID > 0 ? `category=${ categoryID }` : ``
-			}&sortBy=${ sort.sortProperty }&order=desc&search=${ searchValue }` )
-			.then( ( res ) => res.json() )
-			.then( ( arr ) => {
-				setPizzas( arr );
-				setIsLoading( false );
-			} );
+
+		axios.get(
+			`https://63232eaf362b0d4e7dde21f1.mockapi.io/items?${ currentPage }&limit=4&${ categoryID > 0 ? `category=${ categoryID }` : ``
+			}&sortBy=${ sort.sortProperty }&order=desc&search=${ searchValue }`
+		).then( ( res ) => {
+			setPizzas( res.data );
+			setIsLoading( false );
+		} )
 
 		window.scrollTo( 0, 0 );
-	}, [ categoryID, sort.sortProperty, searchValue ] );
+	}, [ categoryID, sort.sortProperty, searchValue, currentPage ] );
 
 	return (
 		<>
@@ -52,6 +60,7 @@ export const Home = () => {
 						) )
 					}
 				</div>
+				<Pagination currentPage={ currentPage } onChangePage={ onChangePage } />
 			</div>
 		</>
 	)

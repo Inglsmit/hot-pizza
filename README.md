@@ -2,6 +2,11 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+== 0.14 ==
+fetch 2 axios 
+bounce for search functionality
+pager to REDUX
+
 ## Available Scripts
 
 In the project directory, you can run:
