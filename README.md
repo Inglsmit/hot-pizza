@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+== 0.15 ==
+params 2 url (qs package)
+resolve proble w/ qs on first render (isMounted)
+
 == 0.14 ==
 fetch 2 axios 
 bounce for search functionality
