@@ -1,3 +1,4 @@
+import { click } from '@testing-library/user-event/dist/click';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { setSort } from '../redux/slice/filtersSlice';
@@ -18,6 +19,18 @@ export const Sort = React.memo( ( { value } ) => {
 		dispatch( setSort( obj ) );
 		setOpen( false );
 	}
+
+	// close popup when click outSide the popup
+	React.useEffect( () => {
+		const handleClickOutSide = ( event ) => {
+			if ( !event.path.includes( sortRef.current ) ) {
+				setOpen( false );
+			}
+		}
+
+		document.body.addEventListener( 'click', handleClickOutSide );
+		return () => document.body.removeEventListener( 'click', handleClickOutSide )
+	} )
 
 	return (
 		<div ref={ sortRef } className="sort">
