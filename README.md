@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+== 0.17.1 ==
+logic from UI to AsyncThunk in REDUX
+
+
 == 0.17 ==
 axios to async/await 
 business-logic move 2 RTK
