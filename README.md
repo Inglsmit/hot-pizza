@@ -2,13 +2,16 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+== 0.17 ==
+axios to async/await 
+business-logic move 2 RTK
+
 == 0.16 ==
 sort popup close when click outSide
 upd cart page
 add cart Empty
 remove item from cart
 clear cart
-
 
 == 0.15 ==
 params 2 url (qs package)
