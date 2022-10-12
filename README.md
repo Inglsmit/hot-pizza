@@ -4,7 +4,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 == 0.17.1 ==
 logic from UI to AsyncThunk in REDUX
-
+Selector for Redux slice
+Remove Searc from COntext to REDUX (optimize rerendering)
 
 == 0.17 ==
 axios to async/await 

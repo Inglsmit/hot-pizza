@@ -10,10 +10,9 @@ import PizzaBlock from '../components/PizzaBlock';
 import Sceleton from '../components/PizzaBlock/Sceleton';
 import { Pagination } from '../components/Pagination';
 
-import { SearchContext } from '../App';
-import axios from 'axios';
+// import { SearchContext } from '../App';
 import { useNavigate } from 'react-router-dom';
-import { setPizzas } from '../redux/slice/pizzasSlice';
+import { fetchPizzas } from '../redux/slice/pizzasSlice';
 
 export const Home = () => {
 	const navigate = useNavigate();
@@ -21,15 +20,11 @@ export const Home = () => {
 	const isSearch = React.useRef( false );
 	const isMounted = React.useRef( false );
 
-	const { categoryID, sort, currentPage } = useSelector( ( state ) => state.filter );
-	const pizzas = useSelector( ( state ) => state.pizzas.items );
+	const { categoryID, sort, currentPage, searchValue } = useSelector( ( state ) => state.filter );
+	const { items: pizzas, status: statusLoading } = useSelector( ( state ) => state.pizzas );
 
-	console.log( pizzas );
-
-	const { searchValue } = React.useContext( SearchContext );
 	// const [ pizzas, setPizzas ] = React.useState( [] );
-	const [ isLoading, setIsLoading ] = React.useState( true );
-
+	// const [ isLoading, setIsLoading ] = React.useState( true );
 
 	const onClickCategory = ( id ) => {
 		dispatch( setCategoryID( id ) )
@@ -39,22 +34,22 @@ export const Home = () => {
 		dispatch( setCurrentPage( number ) );
 	}
 
-	const fetchPizzas = async () => {
-		setIsLoading( true );
+	const getPizzas = async () => {
+		// setIsLoading( true );
 
-		try {
-			const res = await axios.get(
-				`https://63232eaf362b0d4e7dde21f1.mockapi.io/items?page=${ currentPage }&limit=4&${ categoryID > 0 ? `category=${ categoryID }` : ``
-				}&sortBy=${ sort.sortProperty }&order=desc&search=${ searchValue }`
-			);
-			dispatch( setPizzas( res.data ) );
-		} catch ( error ) {
-			console.log( 'ERROR', error )
-			alert( 'Issue with getting pizzas' );
-		} finally {
-			setIsLoading( false );
-		}
+		const sortBy = sort.sortProperty;
+		const category = categoryID > 0 ? `category=${ categoryID }` : '';
+		const search = searchValue ? `&search=${ searchValue }` : '';
 
+		dispatch( fetchPizzas( {
+			sortBy,
+			category,
+			search,
+			currentPage
+		} ) );
+		// catch error removed because of now erro in extraRedusers
+
+		window.scrollTo( 0, 0 );
 	}
 
 	React.useEffect( () => {
@@ -94,7 +89,7 @@ export const Home = () => {
 	React.useEffect( () => {
 		window.scrollTo( 0, 0 );
 		if ( !isSearch.current ) { // qs: if we have got params from URL we no need to do this fetch
-			fetchPizzas();
+			getPizzas();
 		}
 		isSearch.current = false;
 
@@ -108,15 +103,28 @@ export const Home = () => {
 					<Sort value={ sort } />
 				</div>
 				<h2 className="content__title">All pizzas</h2>
-				<div className="content__items">
-					{ isLoading
-						? [ ...new Array( 6 ) ].map( ( _, i ) => <Sceleton key={ i } /> )
-						: pizzas.map( ( pizza, i ) => (
-							<PizzaBlock key={ i } { ...pizza } />
-						) )
-					}
-				</div>
-				<Pagination currentPage={ currentPage } onChangePage={ onChangePage } />
+				{ statusLoading === 'error' ? (
+					<>
+						<h2>Some error happend <icon>😕</icon></h2>
+						<p>
+							Check your internet connection.
+						</p>
+					</>
+				) : (
+					<>
+						<div className="content__items">
+							{ statusLoading === 'loading'
+								? [ ...new Array( 6 ) ].map( ( _, i ) => <Sceleton key={ i } /> )
+								: pizzas.map( ( pizza, i ) => (
+									<PizzaBlock key={ i } { ...pizza } />
+								) )
+							}
+						</div>
+
+						<Pagination currentPage={ currentPage } onChangePage={ onChangePage } />
+					</>
+				) }
+
 			</div>
 		</>
 	)
