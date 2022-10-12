@@ -12,7 +12,7 @@ export const CartEmpty = () => {
 					To order a pizza, go to the main page.
 				</p>
 				<img src={ imgEmpty } alt="Empty cart" />
-				<Link to="/" className="button button--black">
+				<Link to="/hot-pizza/" className="button button--black">
 					<span>Home</span>
 				</Link>
 			</div>
